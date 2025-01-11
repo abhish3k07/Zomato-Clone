@@ -23,7 +23,7 @@ RUN chown -R appuser:appgroup /app
 USER appuser
 
 # Build the React app
-RUN npm run build
+RUN sudo npm run build
 
 # Expose port 3000 (or the port your app is configured to listen on)
 EXPOSE 3000
