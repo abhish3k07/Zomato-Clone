@@ -4,6 +4,9 @@ FROM node:16-slim
 # Set the working directory
 WORKDIR /app
 
+# Create a non-root user and group
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
@@ -12,6 +15,12 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
+# Change ownership of the application files to the non-root user
+RUN chown -R appuser:appgroup /app
+
+# Switch to the non-root user
+USER appuser
 
 # Build the React app
 RUN npm run build
